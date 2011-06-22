@@ -1,4 +1,4 @@
-# A sample Gemfile
 source "http://rubygems.org"
 
-# gem "rails"
+gem "thor", "0.14.6"
+gem "awesome_print", "0.4.0"
