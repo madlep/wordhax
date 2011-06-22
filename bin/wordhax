@@ -8,9 +8,17 @@ require "bundler/setup"
 require 'wordhax'
 require 'awesome_print'
 
-test_letters = ARGV[0] || ""
+require 'thor'
 
-wordhax = Wordhax.new
+class WordHaxCommand < Thor
+  default_task("combos")
+  
+  desc "combos", "Find words that can be created"
+  method_option :letters, :aliases => "-l", :desc => "Letters to find combo words for", :required => true
+  def combos
+    wordhax = Wordhax.new
+    ap wordhax.matches(options[:letters])
+  end
+end
 
-matched_words = wordhax.matches(test_letters)
-ap matched_words
+WordHaxCommand.start
