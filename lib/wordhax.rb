@@ -1,7 +1,3 @@
-#!/usr/bin/env ruby
-
-require 'awesome_print'
-
 class Wordhax
   
   def initialize()
@@ -10,7 +6,8 @@ class Wordhax
   end
   
   def matches(letters)
-    @word_combo_index[letters.downcase.chars.sort].map{|id| @words[id]}
+    results = @word_combo_index[letters.downcase.chars.sort] || []
+    results.map{|id| @words[id]}
   end
     
   private
@@ -35,10 +32,3 @@ class Wordhax
   end
     
 end
-
-test_letters = ARGV[0] || ""
-
-wordhax = Wordhax.new
-
-matched_words = wordhax.matches(test_letters)
-ap matched_words

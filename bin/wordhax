@@ -1,0 +1,16 @@
+#!/usr/bin/env ruby
+
+$LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
+
+require "rubygems"
+require "bundler/setup"
+
+require 'wordhax'
+require 'awesome_print'
+
+test_letters = ARGV[0] || ""
+
+wordhax = Wordhax.new
+
+matched_words = wordhax.matches(test_letters)
+ap matched_words
