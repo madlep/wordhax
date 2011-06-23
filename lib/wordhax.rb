@@ -1,4 +1,5 @@
 require 'progress'
+require 'core_ext/string'
 
 class Wordhax
   
@@ -9,8 +10,14 @@ class Wordhax
   end
   
   def matches(letters)
-    results = @word_combo_index[letters.downcase.chars.sort] || []
-    results.map{|id| @words[id]}
+    combos = letters.downcase.combinations
+    
+    results = combos.inject([]){|acc, combo|
+      acc += (@word_combo_index[combo.chars.sort] || [])
+      acc
+    }
+    
+    results.uniq.map{|id| @words[id]}.sort_by{|word| word.size}
   end
     
   private
