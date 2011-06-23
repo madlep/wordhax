@@ -15,8 +15,9 @@ class WordHaxCommand < Thor
   
   desc "combos", "Find words that can be created"
   method_option :letters, :aliases => "-l", :desc => "Letters to find combo words for", :required => true
+  method_option :progress, :aliases => "-p", :desc => "Display progress", :type => :boolean, :defult => false
   def combos
-    wordhax = Wordhax.new
+    wordhax = Wordhax.new(:display_progress => options[:progress])
     ap wordhax.matches(options[:letters])
   end
 end

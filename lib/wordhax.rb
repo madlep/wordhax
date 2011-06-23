@@ -1,6 +1,9 @@
+require 'progress'
+
 class Wordhax
   
-  def initialize()
+  def initialize(options={:display_progress => false})
+    @display_progress = options[:display_progress]
     @words = load_words()
     @word_combo_index = build_word_index(@words)
   end
@@ -21,10 +24,30 @@ class Wordhax
   def build_word_index(words)
     word_index = {}
     
-    words.each_with_index do |word, i|
-      key = word.downcase.chars.sort
-      word_index[key] ||= []
-      word_index[key] << i
+    progress_increment = 1000
+    interval_counter = 0
+    
+    indexer = lambda{
+      words.each_with_index do |word, i|
+        key = word.chars.sort
+        (word_index[key] ||= []) << i
+
+        # this is hacky - modulus is cleaner, but runs MUCH slower for some reason
+        if @display_progress
+          interval_counter += 1
+          if interval_counter == progress_increment
+            Progress.set(i)
+            interval_counter = 0
+          end
+        end
+      end
+      Progress.set(@words.size) if @display_progress
+    }
+    
+    if @display_progress
+      Progress.start('indexing', @words.size, &indexer)
+    else
+      indexer.call
     end
 
     word_index
