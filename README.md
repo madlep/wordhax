@@ -19,3 +19,5 @@ Basic usage:
 Still very basic. Only finds words with *exactly* those letters. Doesn't find possible words from subcombinations etc, but should get that in there soonish.
 
 Blame [@madlep](https://twitter.com/#!/madlep) for all this.
+
+Word list is copy + paste from http://homepage.ntlworld.com/adam.bozon/Dictionary.htm

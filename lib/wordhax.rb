@@ -14,8 +14,7 @@ class Wordhax
   def load_words()
     word_txt_path = File.join(File.dirname(__FILE__), '..', 'data', 'words_nl.txt')
     words = File.readlines(word_txt_path)
-    words.map!(&:strip) # kill newline characters
-    words.reject!{|w| w =~ /#.*/ } # kill comment lines starting with '#'
+    words.map!{|word| word.strip.downcase} # kill newline characters
     words
   end
   
