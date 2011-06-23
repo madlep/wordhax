@@ -3,10 +3,10 @@ require 'core_ext/string'
 
 class Wordhax
   
-  def initialize(options={:display_progress => false})
+  def initialize(options={:display_progress => false, :force_reindex => false})
     @display_progress = options[:display_progress]
     @words = load_words()
-    @word_combo_index = build_word_index(@words)
+    @word_combo_index = load_word_index(@words, options[:force_reindex])
   end
   
   def matches(letters)
@@ -21,11 +21,32 @@ class Wordhax
   end
     
   private
+  def words_path
+    File.join(File.dirname(__FILE__), '..', 'data', 'words_nl.txt')
+  end
+  
+  def words_combo_index_path
+    File.join(File.dirname(__FILE__), '..', 'data', 'words_combo_index')
+  end
+  
   def load_words()
-    word_txt_path = File.join(File.dirname(__FILE__), '..', 'data', 'words_nl.txt')
-    words = File.readlines(word_txt_path)
+    words = File.readlines(words_path)
     words.map!{|word| word.strip.downcase} # kill newline characters
     words
+  end
+  
+  def load_word_index(words, force_reindex)
+    if !File.exists?(words_combo_index_path) || force_reindex
+      word_index = build_word_index(words)
+      File.open(words_combo_index_path, "wb") do |f|
+        Marshal.dump(word_index, f)
+      end
+      word_index
+    else
+      File.open(words_combo_index_path, "r") do |f|
+        Marshal.load(f)
+      end
+    end
   end
   
   def build_word_index(words)
