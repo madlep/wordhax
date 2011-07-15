@@ -3,6 +3,8 @@ require 'core_ext/string'
 
 class Wordhax
   
+  attr_reader :words, :word_combo_index
+  
   def initialize(options={:display_progress => false, :force_reindex => false})
     @display_progress = options[:display_progress]
     @words = load_words()

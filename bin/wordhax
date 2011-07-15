@@ -19,6 +19,7 @@ class WordHaxCommand < Thor
   method_option :force_reindex, :aliases => "-f", :desc => "Force rebuild of index", :type => :boolean, :default => false
   def combos
     wordhax = Wordhax.new(:display_progress => options[:progress], :force_reindex => options[:force_reindex])
+    wordhax.load!
     
     if options[:letters]
       ap wordhax.matches(options[:letters])
